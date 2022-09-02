@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { useHistory } from 'react-router-dom';
 import options from './data';
+import Player from './Player';
+//import './form.css';
+import song from './music/Baarishein Hon Magar(KoshalWorld.Com).mp3';
+// import song from './songs';
 
 let formData = [];
-const Form = (props) => {
+const Form = () => {
   const history = useHistory();
   const [selected, setSelected] = useState([]);
   const [track1, setTrack1] = useState('');
@@ -18,24 +22,30 @@ const Form = (props) => {
   const onChangeHandler = (searchName) => {
     setSelected(searchName);
   };
-
+  
   useEffect(() => {
-    setTrack7('Alaska');
+    setTrack7('Kishor Kumar - Aachal ke tuze');
   }, []);
 
   const handleClickAction = (skipped) => {
     const dataLen = formData.length;
-    console.log('Start', dataLen);
     let insertObj = {};
-    if (selected[0]) {
+    console.log(selected)
+    if(skipped){
+      insertObj = {
+        "label": "Skipped"
+      };
+    }
+    else{
       insertObj = selected[0];
-      if (skipped) {
-        insertObj.label = 'Skipped';
-      }
+    }
+      // if (skipped) {
+      //   insertObj.label = 'Skipped';
+      // }
 
       formData.push(insertObj);
       if (dataLen === 0) {
-        setTrack1(selected[0].label);
+        setTrack1(formData[0].label);
       } else if (dataLen === 1) {
         setTrack2(formData[1].label);
       } else if (dataLen === 2) {
@@ -49,7 +59,7 @@ const Form = (props) => {
       } else {
         console.log('You lost');
       }
-    }
+    
 
     if (track7 === formData[dataLen].label) {
       console.log('You Won');
@@ -67,7 +77,7 @@ const Form = (props) => {
   };
 
   return (
-    <section>
+     <section>
       <div className="container">
         <div className="row">
           <div className="col-lg-7 offset-lg-2 g-0 mx-auto">
@@ -153,7 +163,10 @@ const Form = (props) => {
                         id="searchTrack"
                         onChange={(searchName) => onChangeHandler(searchName)}
                         options={options}
-                        placeholder="Choose a state..."
+                        maxResults = {10}
+                        emptyLabel = "No matches found"
+                        paginate = {false}
+                        placeholder="Guess the Song..."
                         selected={selected}
                       />
                     </div>
@@ -177,6 +190,10 @@ const Form = (props) => {
                         Skip
                       </button>
                     </div>
+                    <div className="d-grid mt-2">
+                      <Player url ={song} timevalue={formData.length}/>
+                    </div>
+                        
                   </form>
                 </div>
               </div>
@@ -187,4 +204,5 @@ const Form = (props) => {
     </section>
   );
 };
+
 export default Form;

@@ -4,8 +4,16 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^5.2.0",
+<<<<<<< HEAD
+    "bootstrap-icons": "^1.9.1",
     "node-sass": "^7.0.1",
     "react": "17.0.2",
+    "react-bootstrap": "^2.5.0",
+    "react-bootstrap-icons": "^1.8.4",
+=======
+    "node-sass": "^7.0.1",
+    "react": "17.0.2",
+>>>>>>> e8ec8d1667d13f1ec717aaca43d1203ec17577a5
     "react-bootstrap-typeahead": "5.2.2",
     "react-dom": "17.0.2",
     "react-redux": "^7.2.6",
