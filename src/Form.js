@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { useHistory } from 'react-router-dom';
 import options from './data';
@@ -10,6 +10,7 @@ import song from './music/Baarishein Hon Magar(KoshalWorld.Com).mp3';
 let formData = [];
 const Form = () => {
   const history = useHistory();
+  const ref = useRef();
   const [selected, setSelected] = useState([]);
   const [track1, setTrack1] = useState('');
   const [track2, setTrack2] = useState('');
@@ -30,8 +31,7 @@ const Form = () => {
   const handleClickAction = (skipped) => {
     const dataLen = formData.length;
     let insertObj = {};
-    console.log(selected)
-    if(skipped){
+    if(skipped || selected.length === 0){
       insertObj = {
         "label": "Skipped"
       };
@@ -44,6 +44,7 @@ const Form = () => {
       // }
 
       formData.push(insertObj);
+      console.log(formData);
       if (dataLen === 0) {
         setTrack1(formData[0].label);
       } else if (dataLen === 1) {
@@ -57,7 +58,7 @@ const Form = () => {
       } else if (dataLen === 5) {
         setTrack6(formData[5].label);
       } else {
-        console.log('You lost');
+        history.push('/lose');
       }
     
 
@@ -69,11 +70,14 @@ const Form = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     handleClickAction(false);
+    setSelected('');
+    ref.current.clear();
   };
 
   const handleSkipped = (evt) => {
     evt.preventDefault();
     handleClickAction(true);
+    ref.current.clear();
   };
 
   return (
@@ -162,12 +166,10 @@ const Form = () => {
                       <Typeahead
                         id="searchTrack"
                         onChange={(searchName) => onChangeHandler(searchName)}
+                        //multiple
                         options={options}
-                        maxResults = {10}
-                        emptyLabel = "No matches found"
-                        paginate = {false}
                         placeholder="Guess the Song..."
-                        selected={selected}
+                        ref={ref}
                       />
                     </div>
                     <div className="d-grid mt-2">
